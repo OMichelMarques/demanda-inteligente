@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Demanda Inteligente</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: #0d0d0d;
+      color: #f0f0f0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ── TOPO ── */
+    .top-bar {
+      width: 100%;
+      background: #111;
+      text-align: center;
+      padding: 10px 20px;
+      font-size: 13px;
+      color: #aaa;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid #222;
+    }
+
+    /* ── WRAPPER ── */
+    .wrapper {
+      width: 100%;
+      max-width: 780px;
+      padding: 40px 20px 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 36px;
+    }
+
+    /* ── HEADLINE ── */
+    .headline {
+      text-align: center;
+      line-height: 1.25;
+    }
+
+    .headline .pre-head {
+      display: inline-block;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      color: #c8a84b;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 4px;
+      margin-bottom: 18px;
+    }
+
+    .headline h1 {
+      font-size: clamp(26px, 4.5vw, 42px);
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    .headline h1 .destaque {
+      color: #c8a84b;
+    }
+
+    .headline .sub {
+      font-size: clamp(14px, 2vw, 17px);
+      color: #888;
+      line-height: 1.6;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .headline .sub span {
+      color: #bbb;
+      font-weight: 600;
+    }
+
+    /* ── DIVISOR ── */
+    .divider {
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, #c8a84b, #e8c96b);
+      border-radius: 2px;
+      margin: -16px auto 0;
+    }
+
+    /* ── VÍDEO ── */
+    .video-container {
+      width: 100%;
+      background: #111;
+      border: 1px solid #222;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+    }
+
+    .video-wrapper {
+      position: relative;
+      padding-bottom: 56.25%; /* 16:9 */
+      height: 0;
+    }
+
+    .video-wrapper iframe,
+    #yt-player {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      border: none;
+    }
+
+    /* ── BOTÃO WHATSAPP ── */
+    .cta-section {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      pointer-events: none;
+    }
+
+    .cta-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: all;
+    }
+
+    .cta-label {
+      font-size: 13px;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .btn-wpp {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      color: #fff;
+      font-size: clamp(15px, 2.5vw, 18px);
+      font-weight: 700;
+      text-decoration: none;
+      padding: 18px 40px;
+      border-radius: 50px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      box-shadow: 0 4px 24px rgba(34,197,94,0.35);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-wpp:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 8px 32px rgba(34,197,94,0.5);
+    }
+
+    .btn-wpp:active {
+      transform: scale(0.98);
+    }
+
+    .btn-wpp svg {
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+
+    /* pulsação para chamar atenção */
+    @keyframes pulse-green {
+      0%, 100% { box-shadow: 0 4px 24px rgba(34,197,94,0.35); }
+      50%       { box-shadow: 0 4px 40px rgba(34,197,94,0.7); }
+    }
+
+    .cta-section.visible .btn-wpp {
+      animation: pulse-green 2s ease-in-out infinite;
+    }
+
+    /* ── RODAPÉ ── */
+    .footer {
+      width: 100%;
+      text-align: center;
+      padding: 20px;
+      font-size: 12px;
+      color: #444;
+      border-top: 1px solid #1a1a1a;
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 480px) {
+      .btn-wpp { padding: 16px 28px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">Assista ao vídeo completo — a oferta aparece em breve</div>
+
+  <div class="wrapper">
+
+    <!-- HEADLINE -->
+    <div class="headline">
+      <span class="pre-head">Para terapeutas no Instagram</span>
+      <h1>
+        Fature de <span class="destaque">2 a 5 mil reais por semana</span><br>
+        com seu Instagram de terapia<br>
+        usando essa estrutura de 3 etapas
+      </h1>
+      <div class="divider"></div>
+      <br>
+      <p class="sub">
+        <span>Sem ficar tentando viralizar</span> &nbsp;·&nbsp;
+        <span>sem ter muitos seguidores</span> &nbsp;·&nbsp;
+        <span>sem postar todo dia</span>
+      </p>
+    </div>
+
+    <!-- VÍDEO -->
+    <div class="video-container">
+      <div class="video-wrapper">
+        <div id="yt-player"></div>
+      </div>
+    </div>
+
+    <!-- BOTÃO WHATSAPP (aparece em 5:23) -->
+    <div class="cta-section" id="cta">
+      <span class="cta-label">Próximo passo</span>
+      <a
+        class="btn-wpp"
+        href="https://wa.me/5511984772720?text=Ola%2C%20vi%20o%20video%20e%20quero%20implementar%20Demanda%20inteligente%20no%20meu%20perfil"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <!-- ícone WhatsApp -->
+        <svg viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16.003 2.667C8.637 2.667 2.667 8.637 2.667 16c0 2.347.617 4.647 1.79 6.667L2.667 29.333l6.87-1.763A13.29 13.29 0 0016.003 29.333c7.363 0 13.33-5.97 13.33-13.333S23.366 2.667 16.003 2.667zm0 24c-2.13 0-4.217-.573-6.04-1.66l-.433-.257-4.077 1.047 1.077-3.937-.28-.453A10.647 10.647 0 015.333 16c0-5.887 4.783-10.667 10.67-10.667S26.667 10.113 26.667 16 21.887 26.667 16.003 26.667zm5.853-7.987c-.32-.16-1.893-.933-2.187-1.04-.293-.107-.507-.16-.72.16-.213.32-.827 1.04-.013 1.307.32.16.587.267.88.373.8.267 1.667.48 2.48.267.107-.027.213-.08.307-.16.213-.16.4-.373.56-.613.267-.373.32-.773.24-1.173-.08-.4-.347-.747-.667-.907-.16-.08-.4-.16-.64-.213-.24-.053-.493-.053-.747-.027-.32.027-.64.133-.933.293-.293.16-.56.373-.787.613-.347.373-.56.853-.587 1.36-.027.507.12 1.013.413 1.44.267.4.627.747 1.04 1.013.64.4 1.307.667 2.013.747.28.04.56.04.84.013.44-.04.867-.187 1.253-.413.387-.227.72-.533.973-.893.12-.187.213-.387.267-.6.053-.213.067-.44.04-.667-.027-.44-.187-.853-.427-1.2z"/>
+        </svg>
+        Solicitar Preço
+      </a>
+      <p style="font-size:12px;color:#555;">Você será redirecionado para o WhatsApp</p>
+    </div>
+
+  </div>
+
+  <div class="footer">© 2026 · Todos os direitos reservados</div>
+
+  <!-- YouTube IFrame API -->
+  <script>
+    const CTA_TIME = 323; // 5 minutos e 23 segundos
+
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    var player;
+    var ctaShown = false;
+
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('yt-player', {
+        width: '100%',
+        height: '100%',
+        videoId: '9Z2Lm1Qdivo',
+        playerVars: {
+          rel: 0,
+          modestbranding: 1,
+          playsinline: 1
+        },
+        events: {
+          onStateChange: onPlayerStateChange
+        }
+      });
+    }
+
+    var interval;
+
+    function onPlayerStateChange(event) {
+      // YT.PlayerState.PLAYING = 1
+      if (event.data === 1) {
+        interval = setInterval(checkTime, 1000);
+      } else {
+        clearInterval(interval);
+      }
+    }
+
+    function checkTime() {
+      if (ctaShown) { clearInterval(interval); return; }
+      var t = player.getCurrentTime();
+      if (t >= CTA_TIME) {
+        showCta();
+      }
+    }
+
+    function showCta() {
+      ctaShown = true;
+      clearInterval(interval);
+      var cta = document.getElementById('cta');
+      cta.classList.add('visible');
+      cta.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  </script>
+
+</body>
+</html>
