@@ -49,21 +49,22 @@
     }
 
     .headline h1 {
-      font-size: clamp(26px, 4.5vw, 42px);
+      font-size: clamp(20px, 4.5vw, 42px);
       font-weight: 800;
       color: #ffffff;
-      line-height: 1.2;
+      line-height: 1.3;
       margin-bottom: 16px;
     }
 
     .headline h1 .destaque {
       color: #c8a84b;
+      white-space: nowrap;
     }
 
     .headline .sub {
-      font-size: clamp(14px, 2vw, 17px);
+      font-size: clamp(14px, 3.5vw, 17px);
       color: #888;
-      line-height: 1.6;
+      line-height: 1.8;
       max-width: 640px;
       margin: 0 auto;
     }
@@ -71,6 +72,7 @@
     .headline .sub span {
       color: #bbb;
       font-weight: 600;
+      white-space: nowrap;
     }
 
     /* ── DIVISOR ── */
@@ -187,6 +189,21 @@
     /* ── MOBILE ── */
     @media (max-width: 480px) {
       .btn-wpp { padding: 16px 28px; }
+
+      .headline .pre-head {
+        font-size: 11px;
+        letter-spacing: 0.8px;
+        padding: 5px 12px;
+      }
+
+      .headline .sub .sep {
+        display: none;
+      }
+
+      .headline .sub span {
+        display: block;
+        white-space: normal;
+      }
     }
   </style>
 </head>
@@ -198,15 +215,14 @@
     <div class="headline">
       <span class="pre-head">Método exclusivo para terapeutas e psicólogos</span>
       <h1>
-        Fature de <span class="destaque">R$ 2.000,00 a R$ 5.000,00 por semana</span><br>
-        com seu Instagram<br>
-        usando essa estrutura de 3 etapas
+        Fature de <span class="destaque">R$ 2.000,00 a R$ 5.000,00 por semana</span>
+        com seu Instagram usando essa estrutura de 3 etapas
       </h1>
       <div class="divider"></div>
       <br>
       <p class="sub">
-        <span>Sem ficar tentando viralizar</span> &nbsp;·&nbsp;
-        <span>sem ter muitos seguidores</span> &nbsp;·&nbsp;
+        <span>Sem ficar tentando viralizar</span><span class="sep"> &nbsp;·&nbsp; </span>
+        <span>sem ter muitos seguidores</span><span class="sep"> &nbsp;·&nbsp; </span>
         <span>sem postar todo dia</span>
       </p>
     </div>
